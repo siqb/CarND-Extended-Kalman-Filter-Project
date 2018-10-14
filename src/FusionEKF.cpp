@@ -103,10 +103,21 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      * Update the state and covariance matrices.
    */
 
+  // Next, update the prediction with a measurement
+  // This step basically multiplies the Gaussian of
+  // the prediction with the Gaussian of the measurement
+  // which produces a smaller, more certain Gaussian.
+  // The updated position becomes the input to the next
+  // prediction!
+
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-    // Radar updates
+    // Radar measurement updates
+    // Only radar requires an EKF due to non-linearity
+	ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
-    // Laser updates
+    // Laser measurement updates
+    // Laser uses a regular KF due to linearity
+	ekf_.Update(measurement_pack.raw_measurements_);
   }
 
   // print the output

@@ -140,6 +140,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Initialize state.
       */
+      ekf_.x_ << x, y, vx , vy;
+      //ekf_.Init();
     }
 
     // done initializing, no need to predict or update

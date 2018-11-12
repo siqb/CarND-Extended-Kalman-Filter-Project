@@ -22,6 +22,31 @@ FusionEKF::FusionEKF() {
   H_laser_ = MatrixXd(2, 4);
   Hj_ = MatrixXd(3, 4);
 
+  // What's a covariance matrix?
+  // OK - explanation here:
+  // https://www.theanalysisfactor.com/covariance-matrices/
+  // https://medium.com/@adamzerner/covariance-and-correlation-d4c64769d4f1
+
+  // Overall idea is that it shows
+  //
+
+  // a matrix whose element in the i, j position is the covariance between the i-th and j-th elements 
+
+  // How are these value derived? 
+  // Do they need to be tuned?
+  
+  // P is called measurement covariance matrix
+
+  
+  // Q is called the process/noise covariance matrix.
+  // It is asscoiated with uncertainty due to influences we don't
+  // keep track of (enviornmanetal - random wind, bumps, etc.)
+
+  // New uncertainty is predited from the old uncertainty with
+  // some additional uncertainty from the enviornment
+  //
+  // Pk = Fk * Pk-1 * (Fk)^T + Qk
+
   //measurement covariance matrix - laser
   R_laser_ << 0.0225, 0,
         0, 0.0225;

@@ -41,7 +41,6 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
     * Calculate a Jacobian here.
   */
   // Code from lecture
-  MatrixXd Hj(3,4);
   //recover state parameters
   float px = x_state(0);
   float py = x_state(1);
@@ -53,6 +52,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float c2 = sqrt(c1);
   float c3 = (c1*c2);
   //check division by zero
+  MatrixXd Hj(3,4);
   if(fabs(c1) < 0.0001){
     return Hj;
   }

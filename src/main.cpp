@@ -28,15 +28,24 @@ std::string hasData(std::string s) {
 
 int main()
 {
+  // Initialize a uWebSocket server
   uWS::Hub h;
 
   // Create a Kalman Filter instance
+  // What does this EKF get constrcuted and intialized with?
   FusionEKF fusionEKF;
 
   // used to compute the RMSE later
   Tools tools;
   vector<VectorXd> estimations;
   vector<VectorXd> ground_truth;
+
+  // As the sensors produce measuemenrents, this method gets called
+  // The purpose of this method is:
+  //  1. Receive raw measurements from the sensors
+  //  2. Input them to the EKF,
+  //  3. Receive the position estimate output by the EKF
+  //  4. Calculate error of estimate compared to ground truth position
 
   h.onMessage([&fusionEKF,&tools,&estimations,&ground_truth](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
@@ -67,6 +76,7 @@ int main()
     	  iss >> sensor_type;
 
     	  if (sensor_type.compare("L") == 0) {
+                // LiDAR measurements are in cartersian format
       	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
           		meas_package.raw_measurements_ = VectorXd(2);
           		float px;
@@ -77,7 +87,7 @@ int main()
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           } else if (sensor_type.compare("R") == 0) {
-
+                // Radar measurements are in polar format
       	  		meas_package.sensor_type_ = MeasurementPackage::RADAR;
           		meas_package.raw_measurements_ = VectorXd(3);
           		float ro;
@@ -90,6 +100,9 @@ int main()
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           }
+          // Get ground truth values from measurement package
+          // GT would not be available in real life!
+          // Just for educational purposes....
           float x_gt;
     	  float y_gt;
     	  float vx_gt;
@@ -105,9 +118,11 @@ int main()
     	  gt_values(3) = vy_gt;
     	  ground_truth.push_back(gt_values);
           
+	      // Now input the raw measurement to EKF to be processed
           //Call ProcessMeasurment(meas_package) for Kalman filter
     	  fusionEKF.ProcessMeasurement(meas_package);    	  
 
+	      // The estimate created by the EKF has four components
     	  //Push the current estimated x,y positon from the Kalman filter's state vector
 
     	  VectorXd estimate(4);
@@ -124,6 +139,7 @@ int main()
     	  
     	  estimations.push_back(estimate);
 
+	      // Calculate error of the estimate compared to ground truth
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
           json msgJson;

@@ -166,13 +166,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       x_ << x, y, 0, 0;
       ekf_.Init(x_,P_,F_, H_laser_,R_laser_,Q_);
     }
-    /*
-    // Deal with the special case initialisation problems
-    if (fabs(ekf_.x_(0)) < EPS and fabs(ekf_.x_(1)) < EPS){
-		ekf_.x_(0) = EPS;
-		ekf_.x_(1) = EPS;
-    }
-    */
 
     // Print the initialization results
     cout << "EKF init: " << ekf_.x_ << endl;

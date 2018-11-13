@@ -51,8 +51,8 @@ FusionEKF::FusionEKF() {
   // Pk = Fk * Pk-1 * (Fk)^T + Qk
 
   //measurement covariance matrix - laser
-  R_laser_ << 0.0225, 0,
-        0, 0.0225;
+  R_laser_ << 0.00225, 0,
+              0, 0.00225;
   H_laser_ << 1, 0, 0, 0,
               0, 1, 0, 0;
 
@@ -61,11 +61,11 @@ FusionEKF::FusionEKF() {
         0, 0.0009, 0,
         0, 0, 0.09;
 
-  P_ << 200.0, 50.0, 30.0, 0.0, 
-		50.0, 100.0, 0.0, 15.0,
-        30.0, 0.0, 20.0, 5.0,
-        0.0, 15.0, 5.0, 10.0;
-
+  P_ << 1, 0, 0, 0,
+  		  0, 1, 0, 0,
+  		  0, 0, 1000, 0,
+  		  0, 0, 0, 1000;
+  
 
   // Initialize transition matrix
   F_ << 1, 0, 0, 0,
@@ -190,8 +190,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	//compute the time elapsed between the current and previous measurements
 	float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
 	previous_timestamp_ = measurement_pack.timestamp_;
-
-
 
 	//Modify the F matrix so that the time is integrated
 	ekf_.F_(0, 2) = dt;

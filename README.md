@@ -1,9 +1,11 @@
-# Extended Kalman Filter Project Starter Code
+# Extended Kalman Filter Project
 Self-Driving Car Engineer Nanodegree Program
 
 The purpose of this project is to utilize a kalman filter to estimate the state of a moving object of interest with noisy lidar and radar measurements. The project requires obtaining RMSE values that are lower than a given tolerance. 
 
-# What are Kalman filters?
+# Theory
+
+## What are Kalman filters?
 The Kalman filters is a family of algorithms used to combine measurements from multiple sources to produce estimates of unknown variables
 
 It's called a filter because it filters out the uncertainty.
@@ -11,22 +13,24 @@ It's called a filter because it filters out the uncertainty.
 Bayesian filter. A Bayes filter is an algorithm used in computer science for calculating the probabilities of multiple beliefs to allow a robot to infer its position and orientation. Essentially, Bayes filters allow robots to continuously update their most likely position within a coordinate system, based on the most recently acquired sensor data. This is a recursive algorithm. It consists of two parts: prediction and innovation. If the variables are normally distributed and the transitions are linear, the Bayes filter becomes equal to the Kalman filter. 
 
 
-# Intuition
+## Intuition
 Take the example of a chicken attempiting to cross the road. The objective is to not get hit by oncoming traffic. It has eyes and makes predictions based on a motion model within its brain.
 
-# EKF
+## EKF
 the extended Kalman filter (EKF) is the nonlinear version of the Kalman filter which linearizes about an estimate of the current mean and covariance. In the case of well defined transition models, the EKF has been considered[1] the de facto standard in the theory of nonlinear state estimation, navigation systems and GPS.
 
 Most systems are nonlinear, so some attempt was immediately made to apply this filtering method to nonlinear systems. The EKF adapted techniques from calculus, namely multivariate Taylor Series expansions, to linearize a model about a working point. If the system model is not well known or is inaccurate, then Monte Carlo methods, especially particle filters, are employed for estimation. 
+
+# Implementation
 
 ## EKF Flow
 
 1. To kick off the infinite loop, start by taking an initial sensor measurement from either LiDAR or Radar (whichever is available). Use the sensor measurement to generate the state vector.
 2. Predict according to the movement model.
-a. Compute the time elapsed between the prvious and current measurements
-b. Update the transition matrix F with the elapsed time
-c. Update the process covariance matrix Q with the second, third, and fourth derivatives of the elapsed time and the process noise.
-d. Execute the prediction
+ a. Compute the time elapsed between the prvious and current measurements
+ b. Update the transition matrix F with the elapsed time
+ c. Update the process covariance matrix Q with the second, third, and fourth derivatives of the elapsed time and the process noise.
+ d. Execute the prediction
 3. Update the prediction with a measurement.
 4. Loop back to step 2...rinse and repeat...forever!
 

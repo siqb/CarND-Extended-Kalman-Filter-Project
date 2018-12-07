@@ -8,18 +8,31 @@ The purpose of this project is to utilize a kalman filter to estimate the state 
 ## What are Kalman filters?
 The Kalman filters is a family of algorithms used to combine measurements from multiple sources to produce estimates of unknown variables
 
+## Why is it called a "filter?"
+
 It's called a filter because it filters out the uncertainty.
 
 Bayesian filter. A Bayes filter is an algorithm used in computer science for calculating the probabilities of multiple beliefs to allow a robot to infer its position and orientation. Essentially, Bayes filters allow robots to continuously update their most likely position within a coordinate system, based on the most recently acquired sensor data. This is a recursive algorithm. It consists of two parts: prediction and innovation. If the variables are normally distributed and the transitions are linear, the Bayes filter becomes equal to the Kalman filter. 
 
-
 ## Intuition
 Take the example of a chicken attempiting to cross the road. The objective is to not get hit by oncoming traffic. It has eyes and makes predictions based on a motion model within its brain.
 
-## EKF
+## Extended Kalman Filter (EKF)
 the extended Kalman filter (EKF) is the nonlinear version of the Kalman filter which linearizes about an estimate of the current mean and covariance. In the case of well defined transition models, the EKF has been considered[1] the de facto standard in the theory of nonlinear state estimation, navigation systems and GPS.
 
-Most systems are nonlinear, so some attempt was immediately made to apply this filtering method to nonlinear systems. The EKF adapted techniques from calculus, namely multivariate Taylor Series expansions, to linearize a model about a working point. If the system model is not well known or is inaccurate, then Monte Carlo methods, especially particle filters, are employed for estimation. 
+Most systems are non-linear, so some attempt was immediately made to apply this filtering method to nonlinear systems. The EKF adapted techniques from calculus, namely multivariate Taylor Series expansions, to linearize a model about a working point. If the system model is not well known or is inaccurate, then Monte Carlo methods, especially particle filters, are employed for estimation. 
+
+Kalman filterss only work with linear functions. Our solution is to make non-linear functions into linear by approximation. The Taylor Series helped get linear approximations of non-linear functions.
+
+## Where's the non-linearity come from?
+
+The motion model for LiDAR sensor is:
+
+This can use the standard Kalman Filter.
+
+RADAR measurements, however, occur in the polar coordinate system. The conversion to cartesian coordinates involves a non-linear transform:
+
+We must linearly approximate the above function using an EKF.
 
 # Implementation
 
@@ -33,9 +46,6 @@ Most systems are nonlinear, so some attempt was immediately made to apply this f
  d. Execute the prediction
 3. Update the prediction with a measurement.
 4. Loop back to step 2...rinse and repeat...forever!
-
-
-
 
 ["sensor_measurement"] => the measurement that the simulator observed (either lidar or radar)
 

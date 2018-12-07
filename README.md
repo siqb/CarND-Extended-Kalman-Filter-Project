@@ -19,12 +19,17 @@ the extended Kalman filter (EKF) is the nonlinear version of the Kalman filter w
 
 Most systems are nonlinear, so some attempt was immediately made to apply this filtering method to nonlinear systems. The EKF adapted techniques from calculus, namely multivariate Taylor Series expansions, to linearize a model about a working point. If the system model is not well known or is inaccurate, then Monte Carlo methods, especially particle filters, are employed for estimation. 
 
+## EKF Flow
 
-1. mkdir build
-2. cd build
-3. cmake ..
-4. make
-5. ./ExtendedKF
+1. To kick off the infinite loop, start by taking an initial sensor measurement from either LiDAR or Radar (whichever is available). Use the sensor measurement to generate the state vector.
+2. Predict according to the movement model.
+a. Compute the time elapsed between the prvious and current measurements
+b. Update the transition matrix F with the elapsed time
+c. Update the process covariance matrix Q with the second, third, and fourth derivatives of the elapsed time and the process noise.
+d. Execute the prediction
+3. Update the prediction with a measurement.
+4. Loop back to step 2...rinse and repeat...forever!
+
 
 
 

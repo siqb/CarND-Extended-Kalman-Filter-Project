@@ -24,7 +24,7 @@ Most systems are non-linear, so some attempt was immediately made to apply this 
 
 Kalman filterss only work with linear functions. Our solution is to make non-linear functions into linear by approximation. The Taylor Series helped get linear approximations of non-linear functions.
 
-## Where's the non-linearity come from?
+## Where did the non-linearity come from?
 
 The motion model for LiDAR sensor is:
 

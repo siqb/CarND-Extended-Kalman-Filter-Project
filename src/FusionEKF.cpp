@@ -51,8 +51,8 @@ FusionEKF::FusionEKF() {
   // Pk = Fk * Pk-1 * (Fk)^T + Qk
 
   //measurement covariance matrix - laser
-  R_laser_ << 0.00225, 0,
-              0, 0.00225;
+  R_laser_ << 0.0225, 0,
+              0, 0.0225;
   H_laser_ << 1, 0, 0, 0,
               0, 1, 0, 0;
 

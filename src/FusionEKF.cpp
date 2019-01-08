@@ -151,10 +151,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // Coordinates convertion from polar to cartesian
       float x = rho * cos(phi); 
       float y = rho * sin(phi);
-      //float vx = rho_dot * cos(phi);
-      //float vy = rho_dot * sin(phi);
-      //x_ << x, y, vx , vy;
-      x_ << x, y, 0, 0;
+      float vx = rho_dot * cos(phi);
+      float vy = rho_dot * sin(phi);
+      x_ << x, y, vx , vy;
+      //x_ << x, y, 0, 0;
       ekf_.Init(x_,P_,F_, Hj_,R_radar_,Q_);
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
